@@ -242,6 +242,48 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8CBB42FF178C399D00FA270D"
+               BuildableName = "Build &amp; Install Flycast"
+               BlueprintName = "Build &amp; Install Flycast"
+               ReferencedContainer = "container:Flycast/Flycast.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8355D4D91A653A9D00E73302"
+               BuildableName = "Build &amp; Install Dolphin"
+               BlueprintName = "Build &amp; Install Dolphin"
+               ReferencedContainer = "container:Dolphin/Dolphin.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "5517E8C9263D4737000219EC"
+               BuildableName = "Build and Install PCSX2"
+               BlueprintName = "Build and Install PCSX2"
+               ReferencedContainer = "container:PCSX2/PCSX2.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "020422D1143410BF00659DB5"
                BuildableName = "Build &amp; Install Atari800"
                BlueprintName = "Build &amp; Install Atari800"

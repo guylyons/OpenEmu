@@ -1,0 +1,15 @@
+diff --git a/Nestopia.xcodeproj/project.pbxproj b/Nestopia.xcodeproj/project.pbxproj
+index 2fc8af6..e4fd6d6 100644
+--- a/Nestopia.xcodeproj/project.pbxproj
++++ b/Nestopia.xcodeproj/project.pbxproj
+@@ -1034,8 +1034,8 @@
+ 		C6296C610FCEEE45004F84C4 /* AdvancedPreference.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AdvancedPreference.xib; sourceTree = "<group>"; };
+ 		C6D120F81711313900E868A8 /* OpenEmuBase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenEmuBase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+ 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+-		DB0B09012E9854F5007A0109 /* OENESSystemResponderClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OENESSystemResponderClient.h; path = ../../OpenEmu/SystemPlugins/NES/OENESSystemResponderClient.h; sourceTree = SOURCE_ROOT; };
+-		DB0B09022E9854FD007A0109 /* OEFDSSystemResponderClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OEFDSSystemResponderClient.h; path = "../../OpenEmu/SystemPlugins/Nintendo FDS/OEFDSSystemResponderClient.h"; sourceTree = SOURCE_ROOT; };
++		DB0B09012E9854F5007A0109 /* OENESSystemResponderClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OENESSystemResponderClient.h; path = ../OpenEmu/SystemPlugins/NES/OENESSystemResponderClient.h; sourceTree = SOURCE_ROOT; };
++		DB0B09022E9854FD007A0109 /* OEFDSSystemResponderClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OEFDSSystemResponderClient.h; path = "../OpenEmu/SystemPlugins/Nintendo FDS/OEFDSSystemResponderClient.h"; sourceTree = SOURCE_ROOT; };
+ /* End PBXFileReference section */
+ 
+ /* Begin PBXFrameworksBuildPhase section */

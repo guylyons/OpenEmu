@@ -1,0 +1,20 @@
+diff --git a/PPSSPP.xcodeproj/project.pbxproj b/PPSSPP.xcodeproj/project.pbxproj
+index 341c14a..837f3df 100644
+--- a/PPSSPP.xcodeproj/project.pbxproj
++++ b/PPSSPP.xcodeproj/project.pbxproj
+@@ -754,7 +754,6 @@
+ 		8CAFC31C1785DAD500647A96 /* sceMpeg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8CAFA8C11785B3C200647A96 /* sceMpeg.cpp */; };
+ 		8CAFC31E1785DAD500647A96 /* sceNet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8CAFA8C31785B3C200647A96 /* sceNet.cpp */; };
+ 		8CB2173717C6566B00CE82F3 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CB2173617C6566B00CE82F3 /* CoreVideo.framework */; };
+-		8CB2173917C6567B00CE82F3 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CB2173817C6567B00CE82F3 /* AGL.framework */; };
+ 		8CB2173B17C6569400CE82F3 /* VideoDecodeAcceleration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CB2173A17C6569400CE82F3 /* VideoDecodeAcceleration.framework */; };
+ 		8CB74E021785F6F200C652A7 /* BlockDevices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8CAFA86C1785B3C200647A96 /* BlockDevices.cpp */; };
+ 		8CB74E051785F71D00C652A7 /* DirectoryFileSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8CAFA86E1785B3C200647A96 /* DirectoryFileSystem.cpp */; };
+@@ -4122,7 +4121,6 @@
+ 				8CA1540E17C4138E0003002D /* libxxhash.a in Frameworks */,
+ 				8CB2173717C6566B00CE82F3 /* CoreVideo.framework in Frameworks */,
+ 				8CB2173B17C6569400CE82F3 /* VideoDecodeAcceleration.framework in Frameworks */,
+-				8CB2173917C6567B00CE82F3 /* AGL.framework in Frameworks */,
+ 				8C74454E1786DB1E0008BE6A /* OpenGL.framework in Frameworks */,
+ 				8CAFC1231785B6C400647A96 /* OpenEmuBase.framework in Frameworks */,
+ 			);

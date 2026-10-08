@@ -1,0 +1,21 @@
+diff --git a/Dolphin.xcodeproj/project.pbxproj b/Dolphin.xcodeproj/project.pbxproj
+index 2312568a0..be5fd83ba 100644
+--- a/Dolphin.xcodeproj/project.pbxproj
++++ b/Dolphin.xcodeproj/project.pbxproj
+@@ -7614,7 +7614,6 @@
+ 				3E2217931D74AB3300C55942 /* Sources */,
+ 				3E2217941D74AB3300C55942 /* Frameworks */,
+ 				3E2217951D74AB3300C55942 /* Resources */,
+-				3E7AE8EA1FB4E9BC0017E3D1 /* CopyFiles */,
+ 			);
+ 			buildRules = (
+ 			);
+@@ -8337,7 +8336,7 @@
+ 			);
+ 			runOnlyForDeploymentPostprocessing = 0;
+ 			shellPath = /bin/sh;
+-			shellScript = "mkdir -p \"$USER_LIBRARY_DIR/Application Support/OpenEmu/Cores\"\nrm -rf \"$USER_LIBRARY_DIR/Application Support/OpenEmu/Cores/$PROJECT_NAME.oecoreplugin\"{,.dSYM}\ncp -rf \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.oecoreplugin\"{,.dSYM} \"$USER_LIBRARY_DIR/Application Support/OpenEmu/Cores/\"\n";
++			shellScript = "mkdir -p \"$USER_LIBRARY_DIR/Application Support/OpenEmu/Cores\"\nrm -rf \"$USER_LIBRARY_DIR/Application Support/OpenEmu/Cores/$PROJECT_NAME.oecoreplugin\"{,.dSYM}\ncp -rf \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.oecoreplugin\"{,.dSYM} \"$USER_LIBRARY_DIR/Application Support/OpenEmu/Cores/\"\nmkdir -p \"$USER_LIBRARY_DIR/Application Support/OpenEmu/Systems\"\nrm -rf \"$USER_LIBRARY_DIR/Application Support/OpenEmu/Systems/Wii.oesystemplugin\"\ncp -rf \"$BUILT_PRODUCTS_DIR/Wii.oesystemplugin\" \"$USER_LIBRARY_DIR/Application Support/OpenEmu/Systems/\"\n";
+ 		};
+ /* End PBXShellScriptBuildPhase section */
+ 

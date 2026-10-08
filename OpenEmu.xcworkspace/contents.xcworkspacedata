@@ -77,6 +77,15 @@
       location = "group:PPSSPP/PPSSPP.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:Flycast/Flycast.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Dolphin/Dolphin.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:PCSX2/PCSX2.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:ProSystem/ProSystem.xcodeproj">
    </FileRef>
    <FileRef
