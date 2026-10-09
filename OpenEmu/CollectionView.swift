@@ -142,6 +142,12 @@ class CollectionView: NSCollectionView {
         }
     }
     
+    /// Opens the selected item the same way a double-click does.
+    func openSelectedItem() {
+        guard let index = selectionIndexPaths.min() else { return }
+        extendedDelegate?.collectionView(self, doubleClickForItemAt: index)
+    }
+
     func updateSelectionHighlights() {
         CATransaction.begin()
         defer { CATransaction.commit() }

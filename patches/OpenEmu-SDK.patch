@@ -1,0 +1,85 @@
+diff --git a/OpenEmuSystem/OESystemResponder.mm b/OpenEmuSystem/OESystemResponder.mm
+index 5f39289..fcedbf7 100644
+--- a/OpenEmuSystem/OESystemResponder.mm
++++ b/OpenEmuSystem/OESystemResponder.mm
+@@ -117,6 +117,10 @@ @implementation OESystemResponder
+     double _analogToDigitalThreshold;
+     NSMutableDictionary<OEDeviceHandlerPlaceholder *, NSMutableArray<void (^)(void)>*>* _pendingDeviceHandlerBindings;
+     id _token;
++
++    // Left stick → D-pad fallback when the stick isn't bound (RetroArch-style).
++    NSArray<OEKeyBindingDescription *> *_dpadKeys; // N, E, S, W
++    std::unordered_map<NSUInteger, NSUInteger> _devicePlayers; // deviceIdentifier → player
+ }
+ 
+ + (void)load
+@@ -170,6 +174,12 @@ - (instancetype)initWithController:(OESystemController *)controller;
+             }
+         }];
+         
++        // The first hat switch group in each system's Info.plist is its main D-pad.
++        NSArray<NSArray<NSString *> *> *hatGroups = controller.bundle.infoDictionary[OEControlTypesKey][OEHatSwitchControlsKey];
++        NSString *dpadUp = hatGroups.firstObject.firstObject;
++        if (dpadUp != nil)
++            _dpadKeys = controller.keyBindingsDescriptions[dpadUp].hatSwitchKeys;
++
+         NSUserDefaults *ud = [NSUserDefaults oe_applicationUserDefaults];
+         NSNumber *val = [ud objectForKey:@"OESystemResponderADCThreshold"];
+         if (val && [val isKindOfClass:[NSNumber class]]) {
+@@ -713,6 +723,9 @@ - (void)OE_systemBindingsDidSetEvent:(OEHIDEvent *)theEvent forBinding:(__kindof
+     // Ignore off state events.
+     if([theEvent hasOffState]) return;
+ 
++    if([bindingDescription isKindOfClass:[OEKeyBindingDescription class]] && ![(OEKeyBindingDescription *)bindingDescription isSystemWide] && ![theEvent.deviceHandler isKeyboardDevice])
++        _devicePlayers[theEvent.deviceHandler.deviceIdentifier] = playerNumber;
++
+     switch([theEvent type])
+     {
+         case OEHIDEventTypeAxis :
+@@ -895,7 +908,9 @@ - (void)axisMoved:(OEHIDEvent *)anEvent
+     CGFloat                 currentValue      = [anEvent value];
+ 
+     _joystickStates[joystickKey] = { .axisEvent={currentDirection, currentValue} };
+-    
++
++    if([self OE_moveUnboundLeftStick:anEvent previousState:prevState]) return;
++
+     if(keyType == OEAxisSystemKeyTypeJointAnalog) {
+         OESystemKey *key;
+         
+@@ -944,6 +959,35 @@ - (void)axisMoved:(OEHIDEvent *)anEvent
+     }
+ }
+ 
++/// Drives the system's D-pad from the left stick when nothing is bound to that axis.
++- (BOOL)OE_moveUnboundLeftStick:(OEHIDEvent *)anEvent previousState:(OEJoystickState_Axis)prevState
++{
++    OEHIDEventAxis axis = [anEvent axis];
++    if(_dpadKeys.count != HAT_COUNT || (axis != OEHIDEventAxisX && axis != OEHIDEventAxisY)) return NO;
++    if([_keyMap systemKeyForEvent:[anEvent axisEventWithDirection:OEHIDEventAxisDirectionNegative]] ||
++       [_keyMap systemKeyForEvent:[anEvent axisEventWithDirection:OEHIDEventAxisDirectionPositive]]) return NO;
++
++    auto player = _devicePlayers.find(anEvent.deviceHandler.deviceIdentifier);
++    if(player == _devicePlayers.end()) return NO;
++
++    OEKeyBindingDescription *(^keyForDirection)(OEHIDEventAxisDirection) = ^OEKeyBindingDescription *(OEHIDEventAxisDirection dir) {
++        if(dir == OEHIDEventAxisDirectionNull) return nil;
++        BOOL negative = dir == OEHIDEventAxisDirectionNegative;
++        // HID Y is positive downwards.
++        return self->_dpadKeys[axis == OEHIDEventAxisX ? (negative ? WEST : EAST) : (negative ? NORTH : SOUTH)];
++    };
++
++    BOOL wasPressed = ABS(prevState.value) >= _analogToDigitalThreshold;
++    BOOL isPressed  = ABS([anEvent value]) >= _analogToDigitalThreshold;
++    OEKeyBindingDescription *prevKey = wasPressed ? keyForDirection(prevState.direction) : nil;
++    OEKeyBindingDescription *currKey = isPressed ? keyForDirection([anEvent direction]) : nil;
++    if(prevKey == currKey) return YES;
++
++    if(prevKey) _OEBasicSystemResponderReleaseSystemKey(self, [self emulatorKeyForKey:prevKey player:player->second], NO);
++    if(currKey) _OEBasicSystemResponderPressSystemKey(self, [self emulatorKeyForKey:currKey player:player->second], NO);
++    return YES;
++}
++
+ - (void)triggerPull:(OEHIDEvent *)anEvent;
+ {
+     OESystemKey *key = [_keyMap systemKeyForEvent:anEvent];

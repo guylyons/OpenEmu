@@ -25,6 +25,7 @@
  */
 
 import Cocoa
+import Carbon.HIToolbox.Events
 import OpenEmuSystem
 import OpenEmuKit
 
@@ -59,6 +60,8 @@ class AppDelegate: NSObject {
     var hidEventsMonitor: Any?
     var keyboardEventsMonitor: Any?
     var unhandledEventsMonitor: Any?
+    private var gamepadNavigationMonitor: Any?
+    private var gamepadNavigationAxes = [UInt: OEHIDEventAxisDirection]()
         
     var cachedLastPlayedInfo = [CachedLastPlayedInfoItem]()
     
@@ -436,6 +439,10 @@ class AppDelegate: NSObject {
         // Set up OEBindingsController.
         _ = OEBindingsController.self
         let dm = OEDeviceManager.shared
+        gamepadNavigationMonitor = dm.addGlobalEventMonitorHandler { [weak self] handler, event in
+            self?.navigateLibrary(with: event, from: handler)
+            return true
+        }
         if #available(macOS 10.15, *) {
             switch dm.accessType {
             case .unknown:
@@ -1014,6 +1021,88 @@ extension AppDelegate: NSMenuDelegate {
             DispatchQueue.main.async(execute: block)
         } else {
             block()
+        }
+    }
+}
+
+// MARK: - Gamepad Library Navigation
+
+extension AppDelegate {
+    
+    /// Lets a gamepad drive the library: D-pad / left stick move the selection, A opens, B goes back.
+    fileprivate func navigateLibrary(with event: OEHIDEvent, from device: OEDeviceHandler?) {
+        guard
+            event.type != .keyboard,
+            NSApp.isActive,
+            let window = NSApp.keyWindow,
+            let mainWindowController = window.windowController as? MainWindowController,
+            !mainWindowController.mainWindowRunsGame
+        else { return }
+        
+        // Unannotated in the SDK and nil for controls the database doesn't know about.
+        let valueDescription: OEControlValueDescription? = device?.controllerDescription?.controlValueDescription(for: event)
+        let control = valueDescription?.identifier ?? ""
+        
+        switch event.type {
+        case .button where event.state == .on:
+            if control.hasSuffix("DPadUp") { press(kVK_UpArrow, in: window) }
+            else if control.hasSuffix("DPadDown") { press(kVK_DownArrow, in: window) }
+            else if control.hasSuffix("DPadLeft") { press(kVK_LeftArrow, in: window) }
+            else if control.hasSuffix("DPadRight") { press(kVK_RightArrow, in: window) }
+            else if control.hasSuffix("ButtonA") || (control.isEmpty && event.buttonNumber == 1) {
+                if let collectionView = window.firstResponder as? CollectionView, !collectionView.selectionIndexPaths.isEmpty {
+                    collectionView.openSelectedItem()
+                } else {
+                    press(kVK_Return, in: window)
+                }
+            }
+            else if control.hasSuffix("ButtonB") || (control.isEmpty && event.buttonNumber == 2) { press(kVK_Escape, in: window) }
+            
+        case .hatSwitch:
+            let direction = event.hatDirection
+            if direction.contains(.north) { press(kVK_UpArrow, in: window) }
+            else if direction.contains(.south) { press(kVK_DownArrow, in: window) }
+            if direction.contains(.west) { press(kVK_LeftArrow, in: window) }
+            else if direction.contains(.east) { press(kVK_RightArrow, in: window) }
+            
+        case .axis where event.axis == .X || event.axis == .Y:
+            // One step per push past the threshold; the stick must return to center before the next step.
+            // ponytail: no hold-to-repeat; add a timer if scrolling long libraries by stick feels slow.
+            let key = UInt(device?.deviceIdentifier ?? 0) << 8 | UInt(event.axis.rawValue)
+            let direction: OEHIDEventAxisDirection = abs(event.value) >= 0.5 ? event.direction : .null
+            guard gamepadNavigationAxes[key] != direction else { return }
+            gamepadNavigationAxes[key] = direction
+            switch (event.axis, direction) {
+            case (.X, .negative): press(kVK_LeftArrow, in: window)
+            case (.X, .positive): press(kVK_RightArrow, in: window)
+            case (.Y, .negative): press(kVK_UpArrow, in: window)
+            case (.Y, .positive): press(kVK_DownArrow, in: window)
+            default: break
+            }
+            
+        default:
+            break
+        }
+    }
+    
+    private func press(_ keyCode: Int, in window: NSWindow) {
+        let characters: String
+        switch keyCode {
+        case kVK_UpArrow:    characters = String(Character(UnicodeScalar(NSUpArrowFunctionKey)!))
+        case kVK_DownArrow:  characters = String(Character(UnicodeScalar(NSDownArrowFunctionKey)!))
+        case kVK_LeftArrow:  characters = String(Character(UnicodeScalar(NSLeftArrowFunctionKey)!))
+        case kVK_RightArrow: characters = String(Character(UnicodeScalar(NSRightArrowFunctionKey)!))
+        case kVK_Return:     characters = "\r"
+        default:             characters = "\u{1b}"
+        }
+        let modifiers: NSEvent.ModifierFlags = keyCode == kVK_Return || keyCode == kVK_Escape ? [] : [.numericPad, .function]
+        for type in [NSEvent.EventType.keyDown, .keyUp] {
+            guard let keyEvent = NSEvent.keyEvent(with: type, location: .zero, modifierFlags: modifiers,
+                                                  timestamp: ProcessInfo.processInfo.systemUptime, windowNumber: window.windowNumber,
+                                                  context: nil, characters: characters, charactersIgnoringModifiers: characters,
+                                                  isARepeat: false, keyCode: UInt16(keyCode))
+            else { continue }
+            window.sendEvent(keyEvent)
         }
     }
 }
