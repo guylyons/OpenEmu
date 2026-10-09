@@ -8,56 +8,56 @@
 	<string>controller_ps2_mask</string>
 	<key>OEControllerKeyPositionKey</key>
 	<dict>
-		<key>OEPSXButtonUp</key>
-		<string>{119, 275}</string>
-		<key>OEPSXButtonDown</key>
-		<string>{119, 233}</string>
-		<key>OEPSXButtonTriangle</key>
-		<string>{380, 286}</string>
-		<key>OEPSXButtonLeft</key>
-		<string>{96, 254}</string>
-		<key>OEPSXButtonRight</key>
-		<string>{142, 254}</string>
-		<key>OEPSXButtonStart</key>
-		<string>{288, 253}</string>
-		<key>OEPSXButtonSelect</key>
-		<string>{210, 253}</string>
-		<key>OEPSXButtonCircle</key>
-		<string>{414, 254}</string>
-		<key>OEPSXButtonL1</key>
-		<string>{122, 345}</string>
-		<key>OEPSXButtonL2</key>
-		<string>{122, 329}</string>
-		<key>OEPSXButtonL3</key>
-		<string>{185, 192}</string>
-		<key>OEPSXButtonCross</key>
-		<string>{380, 222}</string>
-		<key>OEPSXButtonSquare</key>
-		<string>{346, 254}</string>
-		<key>OEPSXButtonR1</key>
-		<string>{377, 345}</string>
-		<key>OEPSXButtonR2</key>
-		<string>{377, 329}</string>
-		<key>OEPSXButtonR3</key>
-		<string>{315, 192}</string>
-		<key>OEPSXButtonAnalogMode</key>
-		<string>{250, 215}</string>
-		<key>OEPSXLeftAnalogUp</key>
-		<string>{184, 188}</string>
-		<key>OEPSXLeftAnalogDown</key>
-		<string>{184, 188}</string>
-		<key>OEPSXLeftAnalogLeft</key>
-		<string>{184, 188}</string>
-		<key>OEPSXLeftAnalogRight</key>
-		<string>{184, 188}</string>
-		<key>OEPSXRightAnalogUp</key>
-		<string>{315, 188}</string>
-		<key>OEPSXRightAnalogDown</key>
-		<string>{315, 188}</string>
-		<key>OEPSXRightAnalogLeft</key>
-		<string>{315, 188}</string>
-		<key>OEPSXRightAnalogRight</key>
-		<string>{315, 188}</string>
+		<key>OEPS2ButtonAnalogMode</key>
+		<string>{250, 218}</string>
+		<key>OEPS2ButtonCircle</key>
+		<string>{410, 253}</string>
+		<key>OEPS2ButtonCross</key>
+		<string>{378, 222}</string>
+		<key>OEPS2ButtonDown</key>
+		<string>{122, 231}</string>
+		<key>OEPS2ButtonL1</key>
+		<string>{129, 343}</string>
+		<key>OEPS2ButtonL2</key>
+		<string>{129, 329}</string>
+		<key>OEPS2ButtonL3</key>
+		<string>{186, 194}</string>
+		<key>OEPS2ButtonLeft</key>
+		<string>{100, 253}</string>
+		<key>OEPS2ButtonR1</key>
+		<string>{372, 343}</string>
+		<key>OEPS2ButtonR2</key>
+		<string>{372, 329}</string>
+		<key>OEPS2ButtonR3</key>
+		<string>{315, 194}</string>
+		<key>OEPS2ButtonRight</key>
+		<string>{145, 253}</string>
+		<key>OEPS2ButtonSelect</key>
+		<string>{210, 255}</string>
+		<key>OEPS2ButtonSquare</key>
+		<string>{346, 253}</string>
+		<key>OEPS2ButtonStart</key>
+		<string>{290, 255}</string>
+		<key>OEPS2ButtonTriangle</key>
+		<string>{378, 285}</string>
+		<key>OEPS2ButtonUp</key>
+		<string>{122, 276}</string>
+		<key>OEPS2LeftAnalogDown</key>
+		<string>{186, 190}</string>
+		<key>OEPS2LeftAnalogLeft</key>
+		<string>{186, 190}</string>
+		<key>OEPS2LeftAnalogRight</key>
+		<string>{186, 190}</string>
+		<key>OEPS2LeftAnalogUp</key>
+		<string>{186, 190}</string>
+		<key>OEPS2RightAnalogDown</key>
+		<string>{315, 190}</string>
+		<key>OEPS2RightAnalogLeft</key>
+		<string>{315, 190}</string>
+		<key>OEPS2RightAnalogRight</key>
+		<string>{315, 190}</string>
+		<key>OEPS2RightAnalogUp</key>
+		<string>{315, 190}</string>
 	</dict>
 </dict>
 </plist>

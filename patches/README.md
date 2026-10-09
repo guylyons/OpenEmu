@@ -77,6 +77,20 @@ Next: start the game without resuming the auto save state (Restart) to confirm; 
 the emulator cleanly when a state load fails instead of leaving a dead video plugin. To see the core's real messages,
 turn on private log data (needs a configuration profile on macOS 27).
 
+## 2.6.0 plugin fixes
+
+- Every shipped core now has its system plugin in the regular build. Checked by comparing each core's
+  `OESystemIdentifiers` with the bundled plugins' `OESystemIdentifier`: PlayStation 2 (PCSX2), Dreamcast (Flycast) and
+  Atari 8-bit (Atari800) were only in "Build Experimental SystemPlugins"; all three now go through
+  "Build SystemPlugins" / "Copy System Plugins to App Plugins". Wii is installed by Dolphin's own build phase.
+- [ ] Dreamcast sidebar icon is byte-identical to the Arcade cabinet icon (placeholder). Needs Dreamcast artwork.
+- [x] PS2 controller image: generated from `patches/assets/ps2-controller-source.png` at the PS1 image's footprint (x 35–465,
+  top 153 on the 500 pt canvas) with a matching mask. `Controller-Preferences.plist` positions were rewritten from the
+  measured button centres and now use the `OEPS2…` key names; they were copied from PS1 as `OEPSX…`, so no PS2 button
+  ever highlighted.
+- The OpenEmuKit `fatalError("Audio driver not supported")` is only reachable below macOS 11; the deployment target is
+  14.2, so it can't fire. No change needed.
+
 ## PS2 support (in progress)
 
 - The core is there: `PCSX2` submodule (OpenEmu/PCSX2-Core), "Build and Install PCSX2" is in both schemes, and

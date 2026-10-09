@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "controller_psx_mask.png",
+      "filename" : "controller_ps2_mask.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "controller_psx_mask@2x.png",
+      "filename" : "controller_ps2_mask@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
