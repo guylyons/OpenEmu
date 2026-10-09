@@ -60,7 +60,6 @@ class AppDelegate: NSObject {
     var hidEventsMonitor: Any?
     var keyboardEventsMonitor: Any?
     var unhandledEventsMonitor: Any?
-    private var gamepadNavigationMonitor: Any?
     private var gamepadNavigationAxes = [UInt: OEHIDEventAxisDirection]()
         
     var cachedLastPlayedInfo = [CachedLastPlayedInfoItem]()
@@ -439,9 +438,9 @@ class AppDelegate: NSObject {
         // Set up OEBindingsController.
         _ = OEBindingsController.self
         let dm = OEDeviceManager.shared
-        gamepadNavigationMonitor = dm.addGlobalEventMonitorHandler { [weak self] handler, event in
+        // Unhandled, not global: any global monitor sets hasEventMonitor, which stops games receiving controller input.
+        unhandledEventsMonitor = dm.addUnhandledEventMonitorHandler { [weak self] handler, event in
             self?.navigateLibrary(with: event, from: handler)
-            return true
         }
         if #available(macOS 10.15, *) {
             switch dm.accessType {

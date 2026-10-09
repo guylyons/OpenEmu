@@ -30,9 +30,9 @@ xcodebuild -workspace OpenEmu.xcworkspace -scheme "OpenEmu + Cores" -configurati
 - [x] Shaders don't work in the new build — fixed by `OpenEmu-Shaders.patch`.
 - [x] Make the left analog stick drive the D-pad by default for all systems where possible — `OpenEmu-SDK.patch`.
 - [x] PSX (Mednafen) crashes on every game load — `Mednafen.patch`.
-- [ ] **Controller dead in games (2.5.0)** — fix known, not yet applied/built. See "2.5.0 test findings" below.
-- [ ] **N64 black screen** when resuming an auto save state. See below.
-- [ ] **PS2 support** — PCSX2 core builds and installs but the system plugin isn't in the app, and it needs a real icon. See below.
+- [x] **Controller dead in games (2.5.0)** — fixed: library navigation uses the unhandled-event monitor. Needs a hardware test.
+- [ ] **N64 black screen** when resuming an auto save state. App side fixed (a failed state load now resumes emulation instead of leaving the game stuck); still needs the Restart test below to confirm Mupen64Plus itself renders.
+- [ ] **PS2 support** — system plugin now ships in the regular build (moved to "Build SystemPlugins" / "Copy System Plugins to App Plugins"). Still needs a real icon and a test with a real game. See below.
 - [ ] Gamepad library navigation (AppDelegate) is untested on hardware; no hold-to-repeat yet.
 - [ ] Fork the patched cores and commit the fixes there, then repoint the submodules.
 - [ ] UME (MAME) is listed in the workspace and Experimental scheme but has no submodule.

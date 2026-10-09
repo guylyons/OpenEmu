@@ -1739,13 +1739,11 @@ final class OEGameDocument: NSDocument {
         
         let loadState: (() -> Void) = {
             self.gameCoreManager?.loadStateFromFile(at: state.dataFileURL) { success, error in
-                if !success {
-                    if let error = error {
-                        self.presentError(error)
-                    }
-                    return
+                if !success, let error = error {
+                    self.presentError(error)
                 }
-                
+
+                // Keep playing even if the state didn't load; otherwise a bad (e.g. auto) save leaves the game stuck.
                 self.isEmulationPaused = false
             }
         }

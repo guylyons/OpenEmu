@@ -15,7 +15,6 @@
 			dependencies = (
 				011FD36625267927006D7C05 /* PBXTargetDependency */,
 				011FD36825267927006D7C05 /* PBXTargetDependency */,
-				011FD36A25267932006D7C05 /* PBXTargetDependency */,
 				011FD36C25267956006D7C05 /* PBXTargetDependency */,
 				011FD37025267986006D7C05 /* PBXTargetDependency */,
 				011FD3722526798B006D7C05 /* PBXTargetDependency */,
@@ -103,6 +102,7 @@
 				83F37149140BB177005A7353 /* PBXTargetDependency */,
 				83F3714D140BB17A005A7353 /* PBXTargetDependency */,
 				83F3714B140BB179005A7353 /* PBXTargetDependency */,
+				011FD36A25267932006D7C05 /* PBXTargetDependency */,
 			);
 			name = "Build SystemPlugins";
 			productName = "Build SystemPlugins";
@@ -126,6 +126,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		4151F4EC0FFCA7E95382D633 /* PlayStation 2.oesystemplugin in Copy System Plugins to App Plugins */ = {isa = PBXBuildFile; fileRef = 3DB744BA1BD8BA9E00C23E74 /* PlayStation 2.oesystemplugin */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		010EDCA31CE628490020417C /* LibraryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 010EDCA21CE628490020417C /* LibraryController.xib */; };
 		012148082537C6D6007F3C84 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012148072537C6D6007F3C84 /* main.swift */; };
 		012FE6591CE51D4100716960 /* LibraryToolbarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012FE6581CE51D4100716960 /* LibraryToolbarDelegate.swift */; };
@@ -1218,6 +1219,7 @@
 				87BD9E311C2A6774006722DF /* PC Engine CD.oesystemplugin in Copy System Plugins to App Plugins */,
 				87BD9E301C2A675A006722DF /* PlayStation.oesystemplugin in Copy System Plugins to App Plugins */,
 				87BD9E2F1C2A674D006722DF /* PSP.oesystemplugin in Copy System Plugins to App Plugins */,
+				4151F4EC0FFCA7E95382D633 /* PlayStation 2.oesystemplugin in Copy System Plugins to App Plugins */,
 				87BD9E2E1C2A673F006722DF /* Sega CD.oesystemplugin in Copy System Plugins to App Plugins */,
 				87BD9E2D1C2A672F006722DF /* SG-1000.oesystemplugin in Copy System Plugins to App Plugins */,
 				87BD9E2C1C2A6724006722DF /* PC-FX.oesystemplugin in Copy System Plugins to App Plugins */,
@@ -1254,7 +1256,6 @@
 			files = (
 				87FBC0A81C07A22700AECF5A /* Atari 8bit.oesystemplugin in CopyFiles */,
 				87FBC0861BFC77AF00AECF5A /* Commodore 64.oesystemplugin in CopyFiles */,
-				3DB744CE1BD8BB0B00C23E74 /* PlayStation 2.oesystemplugin in CopyFiles */,
 				87DF05411BCE3CEA0060E2C2 /* Dreamcast.oesystemplugin in CopyFiles */,
 				081A462F1B9574CE00565444 /* Pokemon mini.oesystemplugin in CopyFiles */,
 				837964FA1A614C6A00A8DE5C /* Supervision.oesystemplugin in CopyFiles */,
