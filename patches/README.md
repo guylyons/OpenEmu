@@ -31,9 +31,11 @@ xcodebuild -workspace OpenEmu.xcworkspace -scheme "OpenEmu + Cores" -configurati
 - [x] Make the left analog stick drive the D-pad by default for all systems where possible — `OpenEmu-SDK.patch`.
 - [x] PSX (Mednafen) crashes on every game load — `Mednafen.patch`.
 - [x] **Controller dead in games (2.5.0)** — fixed: library navigation uses the unhandled-event monitor. Needs a hardware test.
-- [x] **Controller A/✕ renamed the game instead of opening it** — focus was on a view inside the grid; navigation now walks the responder chain to the grid and opens the selection.
+- [ ] **Controller A/✕ renamed the game instead of opening it** — focus was on a view inside the grid; navigation now walks the responder chain to the grid and opens the selection. **Still happens in 2.6.0**, see "2.6.0 test findings".
 - [ ] **N64 black screen** when resuming an auto save state. App side fixed (a failed state load now resumes emulation instead of leaving the game stuck); still needs the Restart test below to confirm Mupen64Plus itself renders.
 - [ ] **PS2 support** — system plugin now ships in the regular build (moved to "Build SystemPlugins" / "Copy System Plugins to App Plugins"). Has its new sidebar icon; still needs a test with a real game (and a PS2 controller image for Preferences). See below.
+- [ ] **PCSX2 core is Intel-only**, so PS2 can't run on Apple silicon. See "2.6.0 test findings".
+- [ ] **Unsigned plugins in the 2.6.0 DMG** (Gambatte, JollyCV, Wii). See "2.6.0 test findings".
 - [ ] Gamepad library navigation (AppDelegate) is untested on hardware; no hold-to-repeat yet.
 - [ ] Fork the patched cores and commit the fixes there, then repoint the submodules.
 - [ ] UME (MAME) is listed in the workspace and Experimental scheme but has no submodule.
@@ -90,6 +92,29 @@ turn on private log data (needs a configuration profile on macOS 27).
   ever highlighted.
 - The OpenEmuKit `fatalError("Audio driver not supported")` is only reachable below macOS 11; the deployment target is
   14.2, so it can't fire. No change needed.
+
+## 2.6.0 test findings (2026-10-09)
+
+1. **PS2: "The bundle "PCSX2" couldn't be loaded because it doesn't contain a version for the current
+   architecture."** `PCSX2.oecoreplugin` (1.7.5556) is `x86_64 x86_64h` only; the Mac is arm64 and
+   `OpenEmuHelperApp` is universal, so the helper runs as arm64 and can't load it. Opening any PS2 game shows the alert
+   and a test-pattern screen. Options: build the PCSX2 target with `ARCHS=arm64` (the 1.7-era OpenEmu PCSX2-Core
+   recompilers are x86-only, so this probably means moving to an upstream PCSX2 with ARM64 support), or run the helper
+   under Rosetta just for this core (no per-core arch selection exists today). Until then PS2 is Intel-Mac only.
+2. **Library: selecting a game puts its title into rename mode.** Seen in the PlayStation library (Lunar: Silver Star
+   Story Complete: title field highlighted for editing instead of the game opening). The responder-chain fix in
+   6214caaa7 is in 2.6.0, so it didn't cover this path. Not yet known whether controller A/✕, Return or a click
+   triggered it; reproduce and note which.
+3. **Plugins in the DMG were unsigned:** `Gambatte.oecoreplugin`, `JollyCV.oecoreplugin` and `Wii.oesystemplugin`
+   fail `codesign --verify` ("code object is not signed at all") straight off the volume. Apple silicon won't load
+   unsigned code. They were ad-hoc signed by hand (`codesign --force --deep -s -`). The packaging step needs to sign every
+   plugin, then run `codesign --verify --deep --strict` on each before the DMG is made.
+4. **Gatekeeper on install:** everything copied off the DMG is quarantined. The app then runs translocated (OpenEmu says
+   "must move to your Applications folder" while it's already there) and each core gets "Apple could not verify …".
+   Fix used: `xattr -dr com.apple.quarantine /Applications/OpenEmu.app ~/Library/Application\ Support/OpenEmu/{Cores,Systems}`.
+   Add this to `Install.txt` (right-click > Open covers only the app, not the plugins).
+5. `Wii.oesystemplugin` disappeared from `~/Library/Application Support/OpenEmu/Systems` shortly after install (not in
+   the Trash, nothing logged); recopied from the DMG. Cause unknown; watch for it.
 
 ## PS2 support (in progress)
 
