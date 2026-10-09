@@ -31,8 +31,9 @@ xcodebuild -workspace OpenEmu.xcworkspace -scheme "OpenEmu + Cores" -configurati
 - [x] Make the left analog stick drive the D-pad by default for all systems where possible — `OpenEmu-SDK.patch`.
 - [x] PSX (Mednafen) crashes on every game load — `Mednafen.patch`.
 - [x] **Controller dead in games (2.5.0)** — fixed: library navigation uses the unhandled-event monitor. Needs a hardware test.
+- [x] **Controller A/✕ renamed the game instead of opening it** — focus was on a view inside the grid; navigation now walks the responder chain to the grid and opens the selection.
 - [ ] **N64 black screen** when resuming an auto save state. App side fixed (a failed state load now resumes emulation instead of leaving the game stuck); still needs the Restart test below to confirm Mupen64Plus itself renders.
-- [ ] **PS2 support** — system plugin now ships in the regular build (moved to "Build SystemPlugins" / "Copy System Plugins to App Plugins"). Still needs a real icon and a test with a real game. See below.
+- [ ] **PS2 support** — system plugin now ships in the regular build (moved to "Build SystemPlugins" / "Copy System Plugins to App Plugins"). Has its new sidebar icon; still needs a test with a real game (and a PS2 controller image for Preferences). See below.
 - [ ] Gamepad library navigation (AppDelegate) is untested on hardware; no hold-to-repeat yet.
 - [ ] Fork the patched cores and commit the fixes there, then repoint the submodules.
 - [ ] UME (MAME) is listed in the workspace and Experimental scheme but has no submodule.
@@ -87,9 +88,8 @@ turn on private log data (needs a configuration profile on macOS 27).
   "Copy System Plugins to App Plugins" phase like PSP.
 - **Needs a PS2 icon.** The icon is a copy of the PS1 icon. Replace the files in
   `OpenEmu/SystemPlugins/PlayStation 2/Images.xcassets` and rename them to match the imageset (update `Contents.json`):
-  - `ps2_library.imageset`: sidebar icon, 16×16 and 32×32 (@2x) PNG, monochrome template like the others.
-    **New PS2 icon for this update:** `patches/assets/ps2-icon-source.png` (1536×1024 pixel-art PS2 console, full colour on
-    black). It's the source artwork and isn't wired in yet. For the sidebar, crop it to the console, drop the black
-    background, and export 16/32 px versions (the other sidebar icons are single-colour templates).
+  - [x] `ps2_library.imageset`: done. Generated from `patches/assets/ps2-icon-source.png`: background removed by an
+    edge flood fill (keeps the console's own black details), cropped to the console, scaled to 32 px / 16 px wide and
+    centred on a transparent square, full colour like the other sidebar icons (they are not templates).
   - `controller_ps2.imageset` / `controller_ps2_mask.imageset`: controls-preferences controller image + mask,
     500×500 and 1000×1000 (@2x). These are the PS1 controller as well.

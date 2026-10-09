@@ -1049,7 +1049,10 @@ extension AppDelegate {
             else if control.hasSuffix("DPadLeft") { press(kVK_LeftArrow, in: window) }
             else if control.hasSuffix("DPadRight") { press(kVK_RightArrow, in: window) }
             else if control.hasSuffix("ButtonA") || (control.isEmpty && event.buttonNumber == 1) {
-                if let collectionView = window.firstResponder as? CollectionView, !collectionView.selectionIndexPaths.isEmpty {
+                // Focus is often on a view inside the grid, so walk up to it; Return there would rename the game.
+                let collectionView = sequence(first: window.firstResponder, next: { $0?.nextResponder })
+                    .lazy.compactMap { $0 as? CollectionView }.first
+                if let collectionView, !collectionView.selectionIndexPaths.isEmpty {
                     collectionView.openSelectedItem()
                 } else {
                     press(kVK_Return, in: window)
