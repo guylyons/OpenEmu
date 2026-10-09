@@ -30,6 +30,63 @@ xcodebuild -workspace OpenEmu.xcworkspace -scheme "OpenEmu + Cores" -configurati
 - [x] Shaders don't work in the new build — fixed by `OpenEmu-Shaders.patch`.
 - [x] Make the left analog stick drive the D-pad by default for all systems where possible — `OpenEmu-SDK.patch`.
 - [x] PSX (Mednafen) crashes on every game load — `Mednafen.patch`.
+- [ ] **Controller dead in games (2.5.0)** — fix known, not yet applied/built. See "2.5.0 test findings" below.
+- [ ] **N64 black screen** when resuming an auto save state. See below.
+- [ ] **PS2 support** — PCSX2 core builds and installs but the system plugin isn't in the app, and it needs a real icon. See below.
 - [ ] Gamepad library navigation (AppDelegate) is untested on hardware; no hold-to-repeat yet.
 - [ ] Fork the patched cores and commit the fixes there, then repoint the submodules.
 - [ ] UME (MAME) is listed in the workspace and Experimental scheme but has no submodule.
+
+## 2.5.0 test findings (2026-10-09)
+
+### Controller doesn't work in games
+
+Root cause: the library-navigation monitor added in d4a638786 uses `OEDeviceManager.addGlobalEventMonitorHandler`.
+Any global monitor makes `OEDeviceManager.hasEventMonitor` true, and `AppDelegate.shouldHandleControllerEvents`
+returns false while it is (that check exists so key binding in Preferences pauses the game). The monitor is
+registered for the app's whole lifetime, so games never get controller input.
+
+Fix (2 lines, `OpenEmu/AppDelegate.swift`, `setUpHIDSupport()`): use the unhandled-event monitor instead, which
+doesn't touch `hasEventMonitor`, and drop the `gamepadNavigationMonitor` property:
+
+```swift
+// Unhandled, not global: any global monitor sets hasEventMonitor, which stops games receiving controller input.
+unhandledEventsMonitor = dm.addUnhandledEventMonitorHandler { [weak self] handler, event in
+    self?.navigateLibrary(with: event, from: handler)
+}
+```
+
+Also: OpenEmu is ad-hoc signed, so the Input Monitoring grant is tied to that exact build. After installing a new build,
+run `tccutil reset ListenEvent org.openemu.OpenEmu` and grant it again, or the grant stays with the old copy (it showed
+up as "OpenEmu-old" in System Settings).
+
+### N64 (Mupen64Plus 2.5.10) black screen
+
+From the helper logs (`log show --predicate 'process == "OpenEmuHelperApp"'`, Mupen64Plus core messages are `<private>`):
+
+| Game | Auto save load | Rendered | Result |
+|---|---|---|---|
+| Ocarina of Time (18:12) | `State Load Complete -> 0` (failed) | 0 Metal shader compiles | black |
+| Super Mario 64 (18:17) | `State Load Complete -> 0` (failed) | 3 compiles, `bindFBO: OpenGL error 0502` on quit | black |
+| Majora's Mask (18:16) | `State Load Complete -> 1` | 30 shader compiles | ok |
+
+So the black screen happens when the auto save state from the previous core fails to load. GLideN64 then never
+renders. Quitting saves a new auto save state over the old one anyway, so those auto saves are now probably bad as well.
+Next: start the game without resuming the auto save state (Restart) to confirm; if it works, Mupen64Plus should reset
+the emulator cleanly when a state load fails instead of leaving a dead video plugin. To see the core's real messages,
+turn on private log data (needs a configuration profile on macOS 27).
+
+## PS2 support (in progress)
+
+- The core is there: `PCSX2` submodule (OpenEmu/PCSX2-Core), "Build and Install PCSX2" is in both schemes, and
+  `PCSX2.oecoreplugin` (1.7.5556, `openemu.system.ps2`) installs to `~/Library/Application Support/OpenEmu/Cores`.
+- **The system plugin is missing from the app**: `PlayStation 2.oesystemplugin` (source in
+  `OpenEmu/SystemPlugins/PlayStation 2`) is only copied by the "Build & Copy Experimental & Alpha SystemPlugins" target
+  (copy phase `94EBBCFB183F42CE00743756`), so the regular "OpenEmu + Cores" build ships without it and PS2 games are
+  not recognised. Either build with "OpenEmu + Cores (Experimental, Alpha)" or move the PS2 plugin into the
+  "Copy System Plugins to App Plugins" phase like PSP.
+- **Needs a PS2 icon.** The icon is a copy of the PS1 icon. Replace the files in
+  `OpenEmu/SystemPlugins/PlayStation 2/Images.xcassets` and rename them to match the imageset (update `Contents.json`):
+  - `ps2_library.imageset`: sidebar icon, 16×16 and 32×32 (@2x) PNG, monochrome template like the others. (Icon to be provided.)
+  - `controller_ps2.imageset` / `controller_ps2_mask.imageset`: controls-preferences controller image + mask,
+    500×500 and 1000×1000 (@2x). These are the PS1 controller as well.
