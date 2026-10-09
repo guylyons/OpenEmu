@@ -18,6 +18,7 @@ xcodebuild -workspace OpenEmu.xcworkspace -scheme "OpenEmu + Cores" -configurati
 
 - `Dolphin-dolphin.patch`: libpng `pngpriv.h` included `<fp.h>` (Classic Mac OS) because `TARGET_OS_MAC` is always defined.
 - `Dolphin.patch`: Wii system plugin no longer copies itself into OpenEmu.app (unsigned copy broke app codesign); installed to `~/Library/Application Support/OpenEmu/Systems` by "Build & Install Dolphin" instead.
+- `Mednafen.patch`: call `MDFNI_Init()` (once per process) before `MDFNI_InitFinalize()`. The Mednafen 1.32 update dropped it, so no systems were registered and every Mednafen game (PSX, Saturn, PCE, …) aborted on load with `Assertion failed: (MDFNSystems.size())`.
 - `Mupen64Plus.patch`: restore `#ifndef IN_OPENEMU` guards around `g_cheat_ctx` and `new_vi` in `main.c` (duplicate symbols with `Compatibility/main.m`).
 - `Nestopia.patch`: header paths to `OpenEmu/SystemPlugins` had one `../` too many.
 - `OpenEmu-SDK.patch`: when nothing is bound to a controller's left stick, it drives the system's D-pad (first `OEHatSwitchControlsKey` group). Systems whose default mappings bind the stick to their own analog input (N64, PSX, PS2, GameCube, Dreamcast, PSP, Saturn) keep it.
@@ -28,7 +29,7 @@ xcodebuild -workspace OpenEmu.xcworkspace -scheme "OpenEmu + Cores" -configurati
 
 - [x] Shaders don't work in the new build — fixed by `OpenEmu-Shaders.patch`.
 - [x] Make the left analog stick drive the D-pad by default for all systems where possible — `OpenEmu-SDK.patch`.
-- [ ] PSX (Mednafen) crashes on every game load. Needs a crash report (`~/Library/Logs/DiagnosticReports/OpenEmuHelperApp*.ips`) from a machine with games + BIOS.
+- [x] PSX (Mednafen) crashes on every game load — `Mednafen.patch`.
 - [ ] Gamepad library navigation (AppDelegate) is untested on hardware; no hold-to-repeat yet.
 - [ ] Fork the patched cores and commit the fixes there, then repoint the submodules.
 - [ ] UME (MAME) is listed in the workspace and Experimental scheme but has no submodule.
