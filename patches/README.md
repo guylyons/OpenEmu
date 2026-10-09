@@ -93,3 +93,6 @@ turn on private log data (needs a configuration profile on macOS 27).
     centred on a transparent square, full colour like the other sidebar icons (they are not templates).
   - `controller_ps2.imageset` / `controller_ps2_mask.imageset`: controls-preferences controller image + mask,
     500×500 and 1000×1000 (@2x). These are the PS1 controller as well.
+    **New PS2 controller art for this update:** `patches/assets/ps2-controller-source.png` (DualShock 2). It's the source
+    artwork and isn't wired in yet. Scale it into the 500/1000 px canvases, make the matching mask, and check
+    the button highlight positions in `Controller-Preferences.plist`, since they were laid out for the PS1 image.
