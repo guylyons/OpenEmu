@@ -1,0 +1,14 @@
+diff --git a/Source/CompiledShader.swift b/Source/CompiledShader.swift
+index 7e3d072..e905664 100644
+--- a/Source/CompiledShader.swift
++++ b/Source/CompiledShader.swift
+@@ -124,7 +124,8 @@ public enum Compiled {
+             case .version2_1:
+                 self = .version2_1
+             default:
+-                if ((3 << 16)..<(4 << 16)).contains(mtl.rawValue) {
++                // Metal 3.x and later (4.0 is the default on macOS 26+)
++                if mtl.rawValue >= (3 << 16) {
+                     self = .version2_4
+                 } else {
+                     throw LanguageVersionError.unsupportedVersion

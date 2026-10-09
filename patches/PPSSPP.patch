@@ -1,5 +1,5 @@
 diff --git a/PPSSPP.xcodeproj/project.pbxproj b/PPSSPP.xcodeproj/project.pbxproj
-index 341c14a..837f3df 100644
+index 341c14a..4d223f5 100644
 --- a/PPSSPP.xcodeproj/project.pbxproj
 +++ b/PPSSPP.xcodeproj/project.pbxproj
 @@ -754,7 +754,6 @@
@@ -18,3 +18,18 @@ index 341c14a..837f3df 100644
  				8C74454E1786DB1E0008BE6A /* OpenGL.framework in Frameworks */,
  				8CAFC1231785B6C400647A96 /* OpenEmuBase.framework in Frameworks */,
  			);
+@@ -8800,12 +8798,14 @@
+ /* Begin PBXShellScriptBuildPhase section */
+ 		8CB3FB781786CDF100A3C50D /* ShellScript */ = {
+ 			isa = PBXShellScriptBuildPhase;
++			alwaysOutOfDate = 1;
+ 			buildActionMask = 2147483647;
+ 			files = (
+ 			);
+ 			inputPaths = (
+ 			);
+ 			outputPaths = (
++				"$(SRCROOT)/ppsspp/git-version.cpp",
+ 			);
+ 			runOnlyForDeploymentPostprocessing = 0;
+ 			shellPath = /bin/sh;
