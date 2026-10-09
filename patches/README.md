@@ -87,6 +87,9 @@ turn on private log data (needs a configuration profile on macOS 27).
   "Copy System Plugins to App Plugins" phase like PSP.
 - **Needs a PS2 icon.** The icon is a copy of the PS1 icon. Replace the files in
   `OpenEmu/SystemPlugins/PlayStation 2/Images.xcassets` and rename them to match the imageset (update `Contents.json`):
-  - `ps2_library.imageset`: sidebar icon, 16×16 and 32×32 (@2x) PNG, monochrome template like the others. (Icon to be provided.)
+  - `ps2_library.imageset`: sidebar icon, 16×16 and 32×32 (@2x) PNG, monochrome template like the others.
+    **New PS2 icon for this update:** `patches/assets/ps2-icon-source.png` (1536×1024 pixel-art PS2 console, full colour on
+    black). It's the source artwork and isn't wired in yet. For the sidebar, crop it to the console, drop the black
+    background, and export 16/32 px versions (the other sidebar icons are single-colour templates).
   - `controller_ps2.imageset` / `controller_ps2_mask.imageset`: controls-preferences controller image + mask,
     500×500 and 1000×1000 (@2x). These are the PS1 controller as well.
